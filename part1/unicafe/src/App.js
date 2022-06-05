@@ -8,12 +8,18 @@ const Button = ({label, action}) => {
 }
 
 const Stats = ({good, neutral, bad}) => {
+  const all = good + neutral + bad
+  const average = (good * 1 + neutral * 0 + bad * -1) / all
+  const positivePercentage = good / all * 100
   return (
     <>
       <h1>statistics</h1>
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
+      <p>all {all}</p>
+      <p>average: {average}</p>
+      <p>positive: {positivePercentage}% </p>
     </>
   )
 }
