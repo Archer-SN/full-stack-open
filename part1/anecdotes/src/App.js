@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const Button = ({label, action}) => {
   return <button onClick={action}>{label}</button>
@@ -18,7 +18,8 @@ const App = () => {
   const [points, setPoints] = useState(new Uint8Array(anecdotes.length));
 
   const [selected, setSelected] = useState(0)
-
+  const [mostPoint, setMostPoint] = useState({"index": 0, "point": 0})
+ 
   const randomAnecdote = () => {
     setSelected(Math.floor(Math.random() * anecdotes.length))
     console.log(selected)
@@ -30,12 +31,28 @@ const App = () => {
     setPoints(newPoints)
   }
 
+  useEffect(() => {
+    const findMostPoint = () => {
+      return Math.max(...points)
+    }
+  
+    const findIndexWithMostPoint = () => {
+      const most = findMostPoint()
+      return points.indexOf(most)
+    }
+
+    setMostPoint({"index": findIndexWithMostPoint(), "point": findMostPoint()})
+  }, [points])
+
   return (
     <div>
       <p>{anecdotes[selected]} </p>
       <p>has {points[selected]} votes</p>
       <Button label="vote" action={upVote}/>
       <Button label="next anecdote" action={randomAnecdote}/>
+      <h1>Anecdotes with most votes</h1>
+      <p>{anecdotes[mostPoint["index"]]}</p>
+      <p>has {mostPoint["point"]} votes</p>
     </div>
   )
 }
